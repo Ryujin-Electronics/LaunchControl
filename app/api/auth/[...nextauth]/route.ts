@@ -6,7 +6,7 @@ import bcrypt from "bcryptjs"
 
 const prisma = new PrismaClient()
 
-const handler = NextAuth({
+export const authOptions = {
   adapter: PrismaAdapter(prisma),
   providers: [
     CredentialsProvider({
@@ -24,6 +24,9 @@ const handler = NextAuth({
           const user = await prisma.user.findUnique({
             where: {
               email: credentials.email
+            },
+            include: {
+              organization: true
             }
           })
 
@@ -45,6 +48,12 @@ const handler = NextAuth({
             email: user.email,
             name: user.name,
             role: user.role,
+            organizationId: user.organizationId,
+            organization: user.organization ? {
+              id: user.organization.id,
+              name: user.organization.name,
+              type: user.organization.type
+            } : undefined
           }
         } catch (error) {
           console.error("Auth error:", error)
@@ -61,6 +70,8 @@ const handler = NextAuth({
       if (user) {
         token.role = user.role
         token.id = user.id
+        token.organizationId = user.organizationId
+        token.organization = user.organization
       }
       return token
     },
@@ -68,6 +79,8 @@ const handler = NextAuth({
       if (token && session.user) {
         session.user.id = token.id as string
         session.user.role = token.role as string
+        session.user.organizationId = token.organizationId as string
+        session.user.organization = token.organization as any
       }
       return session
     },
@@ -77,6 +90,8 @@ const handler = NextAuth({
     error: "/auth/error",
   },
   secret: process.env.NEXTAUTH_SECRET,
-})
+}
+
+const handler = NextAuth(authOptions)
 
 export { handler as GET, handler as POST } 

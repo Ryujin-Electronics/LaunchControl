@@ -37,18 +37,95 @@ model Session {
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
+model Organization {
+  id          String   @id @default(cuid())
+  name        String
+  type        String   @default("client") // "client" or "ryujin"
+  domain      String?  // For client organizations
+  address     String?
+  phone       String?
+  email       String?
+  status      String   @default("active") // "active", "inactive", "suspended"
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  users       User[]
+  tickets     Ticket[]
+  projects    Project[]
+  purchases   Purchase[]
+}
+
 model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String    @unique
-  emailVerified DateTime?
-  password      String?
-  role          String    @default("user")
-  image         String?
-  accounts      Account[]
-  sessions      Session[]
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  id             String       @id @default(cuid())
+  name           String?
+  email          String       @unique
+  emailVerified  DateTime?
+  password       String?
+  role           String       @default("end_user") // "full_access", "it_admin", "end_user", "ryujin_admin", "ryujin_support"
+  image          String?
+  organizationId String?
+  status         String       @default("active") // "active", "inactive", "suspended"
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  
+  organization   Organization? @relation(fields: [organizationId], references: [id])
+  accounts       Account[]
+  sessions       Session[]
+  tickets        Ticket[]
+  projects       Project[]
+  purchases      Purchase[]
+}
+
+model Ticket {
+  id             String   @id @default(cuid())
+  title          String
+  description    String
+  status         String   @default("open") // "open", "in_progress", "resolved", "closed"
+  priority       String   @default("medium") // "low", "medium", "high", "urgent"
+  type           String   // "support", "purchase_request", "technical", "billing"
+  assignedTo     String?
+  createdBy      String
+  organizationId String
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  user           User         @relation(fields: [createdBy], references: [id])
+}
+
+model Project {
+  id             String   @id @default(cuid())
+  name           String
+  description    String?
+  status         String   @default("planning") // "planning", "in_progress", "completed", "on_hold"
+  startDate      DateTime?
+  endDate        DateTime?
+  budget         Float?
+  createdBy      String
+  organizationId String
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  user           User         @relation(fields: [createdBy], references: [id])
+}
+
+model Purchase {
+  id             String   @id @default(cuid())
+  item           String
+  description    String?
+  quantity       Int      @default(1)
+  unitPrice      Float?
+  totalPrice     Float?
+  status         String   @default("pending") // "pending", "approved", "ordered", "received", "rejected"
+  requestedBy    String
+  approvedBy     String?
+  organizationId String
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  user           User         @relation(fields: [requestedBy], references: [id])
 }
 
 model VerificationToken {

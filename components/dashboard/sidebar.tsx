@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { signOut, useSession } from 'next-auth/react'
 import { cn } from '@/lib/utils'
+import { hasPermission, isRyujinUser, isClientUser } from '@/lib/auth'
 import { 
   Monitor, 
   Headphones, 
@@ -31,7 +32,11 @@ import {
   Cpu,
   Bell,
   User,
-  LogOut
+  LogOut,
+  Users,
+  Building,
+  BarChart3,
+  FileText
 } from 'lucide-react'
 
 interface MenuItem {
@@ -39,16 +44,18 @@ interface MenuItem {
   href: string
   icon: React.ComponentType<{ className?: string }>
   children?: MenuItem[]
+  requiredPermission?: keyof import('@/lib/auth').Permission
+  allowedRoles?: any[]
 }
 
-const menuItems: MenuItem[] = [
+const clientMenuItems: MenuItem[] = [
   {
     title: 'Control',
     href: '/dashboard/control',
     icon: Monitor,
     children: [
-      { title: 'Device Management', href: '/dashboard/control/device-management', icon: Smartphone },
-      { title: 'Proactive Monitoring', href: '/dashboard/control/proactive-monitoring', icon: Cpu },
+      { title: 'Device Management', href: '/dashboard/control/device-management', icon: Smartphone, requiredPermission: 'canManageProjects' },
+      { title: 'Proactive Monitoring', href: '/dashboard/control/proactive-monitoring', icon: Cpu, requiredPermission: 'canViewAnalytics' },
       { title: 'Alerts', href: '/dashboard/alerts', icon: AlertTriangle },
       { title: 'Alert History', href: '/dashboard/control/alert-history', icon: History },
       { title: 'Device History', href: '/dashboard/control/device-history', icon: History },
@@ -68,6 +75,7 @@ const menuItems: MenuItem[] = [
     title: 'Strategy',
     href: '/dashboard/strategy',
     icon: Target,
+    requiredPermission: 'canManageProjects',
     children: [
       { title: 'Strategy & Planning', href: '/dashboard/strategy/strategy-and-planning', icon: Target },
       { title: 'Ecosystem', href: '/dashboard/strategy/ecosystem', icon: Database },
@@ -86,7 +94,7 @@ const menuItems: MenuItem[] = [
       { title: 'Custom Procurement', href: '/dashboard/acquisition/custom-procurement', icon: Settings },
       { title: 'DJI', href: '/dashboard/acquisition/dji', icon: Cpu },
       { title: 'Physical Security', href: '/dashboard/acquisition/physical-security', icon: Shield },
-      { title: 'Purchase History', href: '/dashboard/acquisition/purchase-history', icon: History },
+      { title: 'Purchase History', href: '/dashboard/acquisition/purchase-history', icon: History, requiredPermission: 'canViewPurchaseHistory' },
     ]
   },
   {
@@ -129,6 +137,74 @@ const menuItems: MenuItem[] = [
   },
 ]
 
+const ryujinMenuItems: MenuItem[] = [
+  {
+    title: 'Organizations',
+    href: '/dashboard/organizations',
+    icon: Building,
+    requiredPermission: 'canViewAllOrganizations',
+    children: [
+      { title: 'All Clients', href: '/dashboard/organizations/clients', icon: Users },
+      { title: 'Client Management', href: '/dashboard/organizations/management', icon: Settings, requiredPermission: 'canManageOrganization' },
+    ]
+  },
+  {
+    title: 'Support',
+    href: '/dashboard/support',
+    icon: Headphones,
+    children: [
+      { title: 'All Tickets', href: '/dashboard/support/all-tickets', icon: FileText, requiredPermission: 'canAssignTickets' },
+      { title: 'Remote Support', href: '/dashboard/support/remote-support', icon: Monitor },
+      { title: 'On-site Support', href: '/dashboard/support/on-site-support', icon: Settings },
+      { title: 'Ticket History', href: '/dashboard/support/ticket-history', icon: History },
+    ]
+  },
+  {
+    title: 'Analytics',
+    href: '/dashboard/analytics',
+    icon: BarChart3,
+    requiredPermission: 'canViewAnalytics',
+    children: [
+      { title: 'System Overview', href: '/dashboard/analytics/overview', icon: BarChart3 },
+      { title: 'Client Analytics', href: '/dashboard/analytics/clients', icon: Users },
+      { title: 'Performance Metrics', href: '/dashboard/analytics/performance', icon: Monitor },
+    ]
+  },
+  {
+    title: 'Projects',
+    href: '/dashboard/projects',
+    icon: Target,
+    requiredPermission: 'canManageProjects',
+    children: [
+      { title: 'All Projects', href: '/dashboard/projects/all', icon: Target },
+      { title: 'Project Management', href: '/dashboard/projects/management', icon: Settings },
+      { title: 'Project History', href: '/dashboard/projects/history', icon: History },
+    ]
+  },
+  {
+    title: 'Purchases',
+    href: '/dashboard/purchases',
+    icon: ShoppingCart,
+    children: [
+      { title: 'All Purchases', href: '/dashboard/purchases/all', icon: ShoppingCart, requiredPermission: 'canViewPurchaseHistory' },
+      { title: 'Purchase Approvals', href: '/dashboard/purchases/approvals', icon: Shield, requiredPermission: 'canApprovePurchases' },
+      { title: 'Purchase History', href: '/dashboard/purchases/history', icon: History, requiredPermission: 'canViewPurchaseHistory' },
+    ]
+  },
+  {
+    title: 'Control',
+    href: '/dashboard/control',
+    icon: Monitor,
+    children: [
+      { title: 'All Devices', href: '/dashboard/control/all-devices', icon: Smartphone },
+      { title: 'Proactive Monitoring', href: '/dashboard/control/proactive-monitoring', icon: Cpu },
+      { title: 'All Alerts', href: '/dashboard/alerts', icon: AlertTriangle },
+      { title: 'Alert History', href: '/dashboard/control/alert-history', icon: History },
+      { title: 'Device History', href: '/dashboard/control/device-history', icon: History },
+    ]
+  },
+]
+
 interface SidebarProps {
   isOpen: boolean
   onClose: () => void
@@ -150,7 +226,41 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
   const isExpanded = (title: string) => expandedItems.includes(title)
   const isActive = (href: string) => pathname === href || pathname.startsWith(href + '/')
 
-    const renderMenuItem = (item: MenuItem, level: number = 0) => {
+  // Filter menu items based on user role and permissions
+  const getMenuItems = () => {
+    if (!session) return []
+    
+    if (isRyujinUser(session.user.role)) {
+      return ryujinMenuItems
+    } else {
+      return clientMenuItems
+    }
+  }
+
+  const filterMenuItems = (items: MenuItem[]): MenuItem[] => {
+    return items.filter(item => {
+      // Check role restrictions
+      if (item.allowedRoles && session?.user.role && !item.allowedRoles.includes(session.user.role)) {
+        return false
+      }
+      
+      // Check permission requirements
+      if (item.requiredPermission && !hasPermission(session?.user.role as any, item.requiredPermission)) {
+        return false
+      }
+      
+      // Filter children recursively
+      if (item.children) {
+        item.children = filterMenuItems(item.children)
+      }
+      
+      return true
+    })
+  }
+
+  const menuItems = filterMenuItems(getMenuItems())
+
+  const renderMenuItem = (item: MenuItem, level: number = 0) => {
     const hasChildren = item.children && item.children.length > 0
     const expanded = isExpanded(item.title)
     const active = isActive(item.href)
@@ -219,7 +329,9 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
               </div>
               <div>
                 <span className="text-xl font-bold text-gray-900">Launch Control</span>
-                <p className="text-xs text-gray-500">Command Centre</p>
+                <p className="text-xs text-gray-500">
+                  {session?.user.organization?.name || 'Command Centre'}
+                </p>
               </div>
             </Link>
           </div>
@@ -269,8 +381,17 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
 
             {/* Company Info */}
             <div className="text-center pt-4 border-t border-gray-200/50">
-              <p className="text-sm font-medium text-gray-700">Ryujin Electronics</p>
-              <p className="text-xs text-gray-500 mt-1">Canberra, ACT</p>
+              <p className="text-sm font-medium text-gray-700">
+                {session?.user.organization?.name || 'Ryujin Electronics'}
+              </p>
+              <p className="text-xs text-gray-500 mt-1">
+                {session?.user.role === 'ryujin_admin' || session?.user.role === 'ryujin_support' 
+                  ? 'Canberra, ACT' 
+                  : session?.user.organization?.type === 'client' 
+                    ? 'Client Organization' 
+                    : 'Command Centre'
+                }
+              </p>
             </div>
           </div>
         </div>
