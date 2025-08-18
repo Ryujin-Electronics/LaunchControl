@@ -65,7 +65,7 @@ export default function DeviceManagementPage() {
           <h1 className="text-3xl font-bold text-gray-900">Device Management</h1>
           <p className="text-gray-600 mt-1">Monitor and manage all connected devices</p>
         </div>
-        <Button className="bg-blue-600 hover:bg-blue-700">
+        <Button className="bg-control hover:bg-control-hover text-control-foreground">
           <Plus className="w-4 h-4 mr-2" />
           Add Device
         </Button>
@@ -135,7 +135,7 @@ export default function DeviceManagementPage() {
                   className="pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
-              <Button variant="outline" size="sm">
+              <Button variant="outline" size="sm" className="border-control text-control hover:bg-control hover:text-control-foreground">
                 <Filter className="w-4 h-4 mr-2" />
                 Filter
               </Button>

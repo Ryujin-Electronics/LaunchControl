@@ -1,11 +1,12 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { signOut, useSession } from 'next-auth/react'
 import { cn } from '@/lib/utils'
 import { hasPermission, isRyujinUser, isClientUser } from '@/lib/auth'
+import { Loading } from '@/components/ui/loading'
 import { 
   Monitor, 
   Headphones, 
@@ -36,8 +37,10 @@ import {
   Users,
   Building,
   BarChart3,
-  FileText
+  FileText,
+  MessageSquare
 } from 'lucide-react'
+import Image from 'next/image'
 
 interface MenuItem {
   title: string
@@ -139,6 +142,25 @@ const clientMenuItems: MenuItem[] = [
 
 const ryujinMenuItems: MenuItem[] = [
   {
+    title: 'Messaging',
+    href: '/dashboard/messaging',
+    icon: MessageSquare,
+    children: [
+      { title: 'Internal Chat', href: '/dashboard/messaging', icon: MessageSquare },
+      { title: 'Conversations', href: '/dashboard/messaging', icon: Users },
+    ]
+  },
+  {
+    title: 'Email',
+    href: '/dashboard/email',
+    icon: Mail,
+    children: [
+      { title: 'Compose', href: '/dashboard/email', icon: Mail },
+      { title: 'Templates', href: '/dashboard/email', icon: FileText },
+      { title: 'Setup', href: '/dashboard/email/setup', icon: Settings },
+    ]
+  },
+  {
     title: 'Organizations',
     href: '/dashboard/organizations',
     icon: Building,
@@ -212,8 +234,13 @@ interface SidebarProps {
 
 export function Sidebar({ isOpen, onClose }: SidebarProps) {
   const pathname = usePathname()
-  const { data: session } = useSession()
+  const { data: session, status } = useSession()
   const [expandedItems, setExpandedItems] = useState<string[]>(['Control'])
+  const [isClient, setIsClient] = useState(false)
+
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
 
   const toggleExpanded = (title: string) => {
     setExpandedItems(prev => 
@@ -230,7 +257,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
   const getMenuItems = () => {
     if (!session) return []
     
-    if (isRyujinUser(session.user.role)) {
+    if (isRyujinUser(session.user.role as import('@/lib/auth').UserRole)) {
       return ryujinMenuItems
     } else {
       return clientMenuItems
@@ -245,7 +272,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
       }
       
       // Check permission requirements
-      if (item.requiredPermission && !hasPermission(session?.user.role as any, item.requiredPermission)) {
+      if (item.requiredPermission && !hasPermission(session?.user.role as import('@/lib/auth').UserRole, item.requiredPermission)) {
         return false
       }
       
@@ -265,6 +292,64 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
     const expanded = isExpanded(item.title)
     const active = isActive(item.href)
 
+    // Determine theme colors based on menu section
+    const getThemeColors = (title: string) => {
+      switch (title.toLowerCase()) {
+        case 'control':
+          return {
+            active: 'bg-gradient-to-r from-blue-50 to-blue-100/50 text-blue-700',
+            icon: 'text-blue-600',
+            hover: 'hover:bg-blue-50/80'
+          }
+        case 'support':
+          return {
+            active: 'bg-gradient-to-r from-green-50 to-green-100/50 text-green-700',
+            icon: 'text-green-600',
+            hover: 'hover:bg-green-50/80'
+          }
+        case 'strategy':
+          return {
+            active: 'bg-gradient-to-r from-purple-50 to-purple-100/50 text-purple-700',
+            icon: 'text-purple-600',
+            hover: 'hover:bg-purple-50/80'
+          }
+        case 'acquisition':
+          return {
+            active: 'bg-gradient-to-r from-orange-50 to-orange-100/50 text-orange-700',
+            icon: 'text-orange-600',
+            hover: 'hover:bg-orange-50/80'
+          }
+        case 'digital services':
+        case 'development':
+        case 'hosting':
+          return {
+            active: 'bg-gradient-to-r from-teal-50 to-teal-100/50 text-teal-700',
+            icon: 'text-teal-600',
+            hover: 'hover:bg-teal-50/80'
+          }
+        case 'more':
+          return {
+            active: 'bg-gradient-to-r from-gray-50 to-gray-100/50 text-gray-700',
+            icon: 'text-gray-600',
+            hover: 'hover:bg-gray-50/80'
+          }
+        case 'alerts':
+          return {
+            active: 'bg-gradient-to-r from-red-50 to-red-100/50 text-red-700',
+            icon: 'text-red-600',
+            hover: 'hover:bg-red-50/80'
+          }
+        default:
+          return {
+            active: 'bg-gradient-to-r from-blue-50 to-blue-100/50 text-blue-700',
+            icon: 'text-blue-600',
+            hover: 'hover:bg-gray-100/80'
+          }
+      }
+    }
+
+    const themeColors = getThemeColors(item.title)
+
     return (
       <div key={item.href}>
         <div className="flex items-center">
@@ -273,14 +358,15 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
             className={cn(
               "flex items-center w-full px-4 py-3 text-sm font-medium rounded-lg transition-all duration-200",
               level === 0 
-                ? "text-gray-700 hover:text-gray-900 hover:bg-gray-100/80" 
-                : "text-gray-600 hover:text-gray-800 hover:bg-gray-50/80",
-              active && "bg-gradient-to-r from-blue-50 to-blue-100/50 text-blue-700 shadow-sm",
+                ? "text-gray-700 hover:text-gray-900" 
+                : "text-gray-600 hover:text-gray-800",
+              level === 0 && themeColors.hover,
+              active && themeColors.active,
               level > 0 && "ml-4"
             )}
             onClick={onClose}
           >
-            <item.icon className={cn("mr-3 h-4 w-4 transition-colors", active && "text-blue-600")} />
+            <item.icon className={cn("mr-3 h-4 w-4 transition-colors", active && themeColors.icon)} />
             <span className="flex-1">{item.title}</span>
           </Link>
           {hasChildren && (
@@ -305,6 +391,17 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
     )
   }
 
+  // Show loading state during initial load
+  if (status === 'loading' || !isClient) {
+    return (
+      <div className="fixed inset-y-0 left-0 z-50 w-64 bg-white/95 backdrop-blur-sm border-r border-gray-200/50 lg:relative">
+        <div className="flex items-center justify-center h-full">
+          <Loading text="Loading menu..." />
+        </div>
+      </div>
+    )
+  }
+
   return (
     <>
       {/* Mobile overlay */}
@@ -320,29 +417,27 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
         "fixed inset-y-0 left-0 z-50 w-64 bg-white/95 backdrop-blur-sm border-r border-gray-200/50 transform transition-transform duration-200 ease-in-out lg:relative lg:translate-x-0 lg:inset-0 shadow-lg lg:shadow-none",
         isOpen ? "translate-x-0" : "-translate-x-full"
       )}>
-        <div className="flex flex-col h-full">
-          {/* Header */}
-          <div className="flex items-center justify-between p-6 border-b border-gray-200/50">
-            <Link href="/dashboard" className="flex items-center space-x-3 hover:opacity-80 transition-opacity">
-              <div className="w-10 h-10 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
-                <Monitor className="w-6 h-6 text-white" />
-              </div>
-              <div>
-                <span className="text-xl font-bold text-gray-900">Launch Control</span>
-                <p className="text-xs text-gray-500">
-                  {session?.user.organization?.name || 'Command Centre'}
-                </p>
-              </div>
-            </Link>
-          </div>
-
-          {/* Navigation */}
-          <nav className="flex-1 px-4 py-6 space-y-2 overflow-y-auto">
+        {/* Header - fixed */}
+        <div className="flex items-center justify-between p-6 border-b border-gray-200/50 flex-shrink-0 h-20 min-h-[80px] max-h-[80px]">
+          <Link href="/dashboard" className="flex items-center space-x-3 hover:opacity-80 transition-opacity">
+            <div className="w-10 h-10 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
+              <Monitor className="w-6 h-6 text-white" />
+            </div>
+            <div>
+              <span className="text-xl font-bold text-gray-900">Launch Control</span>
+              <p className="text-xs text-gray-500">
+                {session?.user.organization?.name || 'Command Centre'}
+              </p>
+            </div>
+          </Link>
+        </div>
+        {/* Scrollable area: menu + user section, always 100vh minus header */}
+        <div className="flex flex-col h-[calc(100vh-80px)] min-h-0 overflow-y-auto">
+          <div className="flex-shrink-0 px-4 py-6 space-y-2 min-h-[calc(100vh-80px)]">
             {menuItems.map(item => renderMenuItem(item))}
-          </nav>
-
-          {/* User Section */}
-          <div className="p-4 border-t border-gray-200/50 bg-gray-50/50">
+          </div>
+          {/* User Section at the very bottom of scroll, always below the fold */}
+          <div className="flex-shrink-0 p-4 border-t border-gray-200/50 bg-gray-50/50" style={{height: '200px'}}>
             {/* Alerts/Notifications */}
             <div className="mb-4">
               <Link
@@ -352,10 +447,9 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
               >
                 <Bell className="mr-3 h-4 w-4" />
                 <span className="flex-1">Alerts</span>
-                <span className="w-2 h-2 bg-red-500 rounded-full"></span>
+                <span className="w-2 h-2 bg-red-500 icon-circle"></span>
               </Link>
             </div>
-
             {/* User Account */}
             <div className="mb-4">
               <Link
@@ -363,22 +457,40 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
                 className="flex items-center w-full px-3 py-2 text-sm font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-100/80 rounded-lg transition-all duration-200"
                 onClick={onClose}
               >
-                <User className="mr-3 h-4 w-4" />
+                {session?.user?.image ? (
+                  <span className="mr-3 w-8 h-8 rounded-full overflow-hidden border-2 border-gray-200 bg-white flex items-center justify-center">
+                    <Image
+                      src={session.user.image}
+                      alt="Profile"
+                      width={32}
+                      height={32}
+                      className="object-cover w-8 h-8 rounded-full"
+                    />
+                  </span>
+                ) : (
+                  <User className="mr-3 h-4 w-4" />
+                )}
                 <span className="flex-1">Account</span>
               </Link>
             </div>
-
             {/* Sign Out */}
             <div className="mb-4">
               <button
-                onClick={() => signOut({ callbackUrl: '/auth/signin' })}
+                onClick={async () => {
+                  console.log('Sign out clicked')
+                  try {
+                    await signOut({ callbackUrl: '/auth/signin' })
+                  } catch (e) {
+                    console.error('Sign out with callbackUrl failed, trying without:', e)
+                    await signOut()
+                  }
+                }}
                 className="flex items-center w-full px-3 py-2 text-sm font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-100/80 rounded-lg transition-all duration-200"
               >
                 <LogOut className="mr-3 h-4 w-4" />
                 <span className="flex-1 text-left">Sign Out</span>
               </button>
             </div>
-
             {/* Company Info */}
             <div className="text-center pt-4 border-t border-gray-200/50">
               <p className="text-sm font-medium text-gray-700">

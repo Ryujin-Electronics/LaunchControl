@@ -78,7 +78,7 @@ export default function HardwarePage() {
           <h1 className="text-3xl font-bold text-gray-900">Hardware Acquisition</h1>
           <p className="text-gray-600 mt-1">Manage hardware procurement and inventory</p>
         </div>
-        <Button className="bg-blue-600 hover:bg-blue-700">
+        <Button className="bg-acquisition hover:bg-acquisition-hover text-acquisition-foreground">
           <Plus className="w-4 h-4 mr-2" />
           Add Hardware
         </Button>

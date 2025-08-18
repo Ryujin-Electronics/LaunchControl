@@ -56,7 +56,7 @@ export default function StrategyAndPlanningPage() {
           <h1 className="text-3xl font-bold text-gray-900">Strategy & Planning</h1>
           <p className="text-gray-600 mt-1">Strategic initiatives and technology roadmap</p>
         </div>
-        <Button className="bg-purple-600 hover:bg-purple-700">
+        <Button className="bg-strategy hover:bg-strategy-hover text-strategy-foreground">
           <Plus className="w-4 h-4 mr-2" />
           New Initiative
         </Button>

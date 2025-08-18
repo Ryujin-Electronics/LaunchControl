@@ -54,10 +54,10 @@ export default function RemoteSupportPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Remote Support</h1>
-          <p className="text-gray-600 mt-1">Provide remote assistance to users</p>
+          <h1 className="text-3xl font-bold text-foreground">Remote Support</h1>
+          <p className="text-muted-foreground mt-1">Provide remote assistance to users</p>
         </div>
-        <Button className="bg-blue-600 hover:bg-blue-700">
+        <Button className="bg-support hover:bg-support-hover text-support-foreground">
           <Plus className="w-4 h-4 mr-2" />
           New Session
         </Button>
@@ -68,10 +68,10 @@ export default function RemoteSupportPage() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Active Sessions</CardTitle>
-            <Monitor className="h-4 w-4 text-blue-500" />
+            <Monitor className="h-4 w-4 text-support" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-blue-600">3</div>
+            <div className="text-2xl font-bold text-support">3</div>
             <p className="text-xs text-muted-foreground">Currently in progress</p>
           </CardContent>
         </Card>
@@ -79,10 +79,10 @@ export default function RemoteSupportPage() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Available Techs</CardTitle>
-            <Users className="h-4 w-4 text-green-500" />
+            <Users className="h-4 w-4 text-support" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-green-600">8</div>
+            <div className="text-2xl font-bold text-support">8</div>
             <p className="text-xs text-muted-foreground">Ready to assist</p>
           </CardContent>
         </Card>
@@ -90,10 +90,10 @@ export default function RemoteSupportPage() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Avg Response</CardTitle>
-            <Clock className="h-4 w-4 text-orange-500" />
+            <Clock className="h-4 w-4 text-support" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-orange-600">2.3 min</div>
+            <div className="text-2xl font-bold text-support">2.3 min</div>
             <p className="text-xs text-muted-foreground">Today's average</p>
           </CardContent>
         </Card>
@@ -101,10 +101,10 @@ export default function RemoteSupportPage() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Success Rate</CardTitle>
-            <CheckCircle className="h-4 w-4 text-purple-500" />
+            <CheckCircle className="h-4 w-4 text-support" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-purple-600">96%</div>
+            <div className="text-2xl font-bold text-support">96%</div>
             <p className="text-xs text-muted-foreground">Issues resolved</p>
           </CardContent>
         </Card>
@@ -121,11 +121,11 @@ export default function RemoteSupportPage() {
                 <CardDescription>Currently ongoing support sessions</CardDescription>
               </div>
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
                 <input
                   type="text"
                   placeholder="Search sessions..."
-                  className="pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="pl-10 pr-4 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-support bg-background text-foreground"
                 />
               </div>
             </div>
@@ -133,29 +133,29 @@ export default function RemoteSupportPage() {
           <CardContent>
             <div className="space-y-4">
               {remoteSessions.map((session) => (
-                <div key={session.id} className="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:bg-gray-50">
+                <div key={session.id} className="flex items-center justify-between p-4 border border-border rounded-lg hover:bg-muted">
                   <div className="flex items-center space-x-4">
                     <div className={`w-3 h-3 rounded-full ${
-                      session.status === 'active' ? 'bg-green-500' : 
-                      session.status === 'completed' ? 'bg-blue-500' : 'bg-orange-500'
+                      session.status === 'active' ? 'bg-support' : 
+                      session.status === 'completed' ? 'bg-primary' : 'bg-acquisition'
                     }`}></div>
                     <div>
-                      <h3 className="font-medium text-gray-900">{session.user}</h3>
-                      <p className="text-sm text-gray-500">{session.device}</p>
-                      <p className="text-xs text-gray-400">{session.issue}</p>
+                      <h3 className="font-medium text-foreground">{session.user}</h3>
+                      <p className="text-sm text-muted-foreground">{session.device}</p>
+                      <p className="text-xs text-muted-foreground">{session.issue}</p>
                     </div>
                   </div>
                   <div className="text-right">
                     <div className="flex items-center space-x-2 mb-1">
-                      {session.type === 'screen-share' && <Monitor className="w-4 h-4 text-blue-500" />}
-                      {session.type === 'phone' && <Phone className="w-4 h-4 text-green-500" />}
-                      {session.type === 'chat' && <MessageSquare className="w-4 h-4 text-purple-500" />}
-                      <span className="text-sm font-medium text-gray-900">{session.duration}</span>
+                      {session.type === 'screen-share' && <Monitor className="w-4 h-4 text-support" />}
+                      {session.type === 'phone' && <Phone className="w-4 h-4 text-support" />}
+                      {session.type === 'chat' && <MessageSquare className="w-4 h-4 text-support" />}
+                      <span className="text-sm font-medium text-foreground">{session.duration}</span>
                     </div>
-                    <p className="text-xs text-gray-500">{session.technician}</p>
+                    <p className="text-xs text-muted-foreground">{session.technician}</p>
                     <div className="flex space-x-1 mt-2">
-                      <Button variant="outline" size="sm">Join</Button>
-                      <Button variant="outline" size="sm">End</Button>
+                      <Button variant="outline" size="sm" className="border-support text-support hover:bg-support hover:text-support-foreground">Join</Button>
+                      <Button variant="outline" size="sm" className="border-destructive text-destructive hover:bg-destructive hover:text-destructive-foreground">End</Button>
                     </div>
                   </div>
                 </div>
@@ -172,24 +172,24 @@ export default function RemoteSupportPage() {
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-2 gap-4">
-              <Button className="h-24 flex flex-col items-center justify-center space-y-2 bg-blue-50 hover:bg-blue-100 border-2 border-blue-200">
-                <Video className="w-8 h-8 text-blue-600" />
-                <span className="text-sm font-medium text-blue-900">Screen Share</span>
+              <Button className="h-24 flex flex-col items-center justify-center space-y-2 bg-support hover:bg-support-hover text-support-foreground border-2 border-support">
+                <Video className="w-8 h-8" />
+                <span className="text-sm font-medium">Screen Share</span>
               </Button>
               
-              <Button className="h-24 flex flex-col items-center justify-center space-y-2 bg-green-50 hover:bg-green-100 border-2 border-green-200">
-                <Phone className="w-8 h-8 text-green-600" />
-                <span className="text-sm font-medium text-green-900">Voice Call</span>
+              <Button className="h-24 flex flex-col items-center justify-center space-y-2 bg-support hover:bg-support-hover text-support-foreground border-2 border-support">
+                <Phone className="w-8 h-8" />
+                <span className="text-sm font-medium">Voice Call</span>
               </Button>
               
-              <Button className="h-24 flex flex-col items-center justify-center space-y-2 bg-purple-50 hover:bg-purple-100 border-2 border-purple-200">
-                <MessageSquare className="w-8 h-8 text-purple-600" />
-                <span className="text-sm font-medium text-purple-900">Chat Support</span>
+              <Button className="h-24 flex flex-col items-center justify-center space-y-2 bg-support hover:bg-support-hover text-support-foreground border-2 border-support">
+                <MessageSquare className="w-8 h-8" />
+                <span className="text-sm font-medium">Chat Support</span>
               </Button>
               
-              <Button className="h-24 flex flex-col items-center justify-center space-y-2 bg-orange-50 hover:bg-orange-100 border-2 border-orange-200">
-                <Monitor className="w-8 h-8 text-orange-600" />
-                <span className="text-sm font-medium text-orange-900">Remote Control</span>
+              <Button className="h-24 flex flex-col items-center justify-center space-y-2 bg-support hover:bg-support-hover text-support-foreground border-2 border-support">
+                <Monitor className="w-8 h-8" />
+                <span className="text-sm font-medium">Remote Control</span>
               </Button>
             </div>
           </CardContent>
@@ -204,37 +204,37 @@ export default function RemoteSupportPage() {
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
-            <div className="flex items-center justify-between p-4 bg-green-50 border border-green-200 rounded-lg">
+            <div className="flex items-center justify-between p-4 bg-support-light border border-support rounded-lg">
               <div className="flex items-center space-x-3">
-                <CheckCircle className="w-5 h-5 text-green-500" />
+                <CheckCircle className="w-5 h-5 text-support" />
                 <div>
-                  <p className="font-medium text-green-900">Session completed successfully</p>
-                  <p className="text-sm text-green-700">Sarah Wilson • Email configuration resolved • 8 minutes ago</p>
+                  <p className="font-medium text-support-foreground">Session completed successfully</p>
+                  <p className="text-sm text-muted-foreground">Sarah Wilson • Email configuration resolved • 8 minutes ago</p>
                 </div>
               </div>
-              <span className="text-sm text-green-600 font-medium">Resolved</span>
+              <span className="text-sm text-support font-medium">Resolved</span>
             </div>
             
-            <div className="flex items-center justify-between p-4 bg-blue-50 border border-blue-200 rounded-lg">
+            <div className="flex items-center justify-between p-4 bg-primary-light border border-primary rounded-lg">
               <div className="flex items-center space-x-3">
-                <Monitor className="w-5 h-5 text-blue-500" />
+                <Monitor className="w-5 h-5 text-primary" />
                 <div>
-                  <p className="font-medium text-blue-900">New remote session started</p>
-                  <p className="text-sm text-blue-700">John Smith • Software installation • 15 minutes ago</p>
+                  <p className="font-medium text-primary-foreground">New remote session started</p>
+                  <p className="text-sm text-muted-foreground">John Smith • Software installation • 15 minutes ago</p>
                 </div>
               </div>
-              <span className="text-sm text-blue-600 font-medium">Active</span>
+              <span className="text-sm text-primary font-medium">Active</span>
             </div>
             
-            <div className="flex items-center justify-between p-4 bg-orange-50 border border-orange-200 rounded-lg">
+            <div className="flex items-center justify-between p-4 bg-acquisition-light border border-acquisition rounded-lg">
               <div className="flex items-center space-x-3">
-                <Clock className="w-5 h-5 text-orange-500" />
+                <Clock className="w-5 h-5 text-acquisition" />
                 <div>
-                  <p className="font-medium text-orange-900">Support request queued</p>
-                  <p className="text-sm text-orange-700">David Lee • Network connectivity • 2 minutes ago</p>
+                  <p className="font-medium text-acquisition-foreground">Support request queued</p>
+                  <p className="text-sm text-muted-foreground">David Lee • Network connectivity • 2 minutes ago</p>
                 </div>
               </div>
-              <span className="text-sm text-orange-600 font-medium">Waiting</span>
+              <span className="text-sm text-acquisition font-medium">Waiting</span>
             </div>
           </div>
         </CardContent>

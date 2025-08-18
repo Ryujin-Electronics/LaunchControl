@@ -67,13 +67,23 @@ model User {
   status         String       @default("active") // "active", "inactive", "suspended"
   createdAt      DateTime     @default(now())
   updatedAt      DateTime     @updatedAt
+  phone          String?      // User's phone number
+  jobTitle       String?      // User's job title
+  preferences    Json?        // User preferences (notifications, dark mode, etc)
   
   organization   Organization? @relation(fields: [organizationId], references: [id])
   accounts       Account[]
   sessions       Session[]
   tickets        Ticket[]
+  messages       Message[]
+  assignedTickets Ticket[] @relation("AssignedTickets")
   projects       Project[]
   purchases      Purchase[]
+  resolvedTickets Ticket[] @relation("ResolvedBy")
+  
+  // Internal messaging relationships
+  conversationParticipants ConversationParticipant[]
+  internalMessages         InternalMessage[]
 }
 
 model Ticket {
@@ -83,14 +93,41 @@ model Ticket {
   status         String   @default("open") // "open", "in_progress", "resolved", "closed"
   priority       String   @default("medium") // "low", "medium", "high", "urgent"
   type           String   // "support", "purchase_request", "technical", "billing"
+  category       String?  // "hardware", "software", "network", "account", "billing", "other"
   assignedTo     String?
   createdBy      String
   organizationId String
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
-  
+
+  // Resolution fields
+  resolvedById   String?
+  resolvedBy     User?    @relation("ResolvedBy", fields: [resolvedById], references: [id])
+  resolutionDescription String?
+  resolvedAt     DateTime?
+
+  // Ticket linking
+  parentTicketId String?
+  parentTicket   Ticket?  @relation("ParentTicket", fields: [parentTicketId], references: [id])
+  childTickets   Ticket[] @relation("ParentTicket")
+
   organization   Organization @relation(fields: [organizationId], references: [id])
   user           User         @relation(fields: [createdBy], references: [id])
+  messages       Message[]
+  assignedUser   User?        @relation("AssignedTickets", fields: [assignedTo], references: [id])
+}
+
+model Message {
+  id        String   @id @default(cuid())
+  content   String
+  imageUrl  String?
+  ticketId  String
+  userId    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  ticket    Ticket   @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id])
 }
 
 model Project {
@@ -134,4 +171,58 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+// Internal Staff Messaging System
+model Conversation {
+  id          String   @id @default(cuid())
+  name        String?  // For group conversations
+  type        String   @default("direct") // "direct" or "group"
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  participants ConversationParticipant[]
+  messages     InternalMessage[]
+  lastMessage  InternalMessage? @relation("LastMessage", fields: [lastMessageId], references: [id])
+  lastMessageId String?
+}
+
+model ConversationParticipant {
+  id             String @id @default(cuid())
+  conversationId String
+  userId         String
+  role           String @default("member") // "admin", "member"
+  joinedAt       DateTime @default(now())
+  leftAt         DateTime?
+  isActive       Boolean @default(true)
+  
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  user          User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@unique([conversationId, userId])
+}
+
+model InternalMessage {
+  id             String   @id @default(cuid())
+  conversationId String
+  senderId       String
+  content        String
+  messageType    String   @default("text") // "text", "image", "video", "file"
+  mediaUrl       String?
+  mediaThumbnail String?
+  mediaSize      Int?     // File size in bytes
+  mediaDuration  Int?     // For video/audio in seconds
+  isEdited       Boolean  @default(false)
+  editedAt       DateTime?
+  isDeleted      Boolean  @default(false)
+  deletedAt      DateTime?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  sender        User         @relation(fields: [senderId], references: [id], onDelete: Cascade)
+  
+  // For conversation last message tracking
+  conversationLastMessage Conversation[] @relation("LastMessage")
 } 

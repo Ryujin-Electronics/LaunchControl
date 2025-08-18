@@ -1,5 +1,5 @@
 import { getServerSession } from "next-auth/next"
-import { authOptions } from "@/app/api/auth/[...nextauth]/route"
+import { authOptions } from "@/lib/auth-config"
 
 export type UserRole = 
   | "full_access"      // Client: Full access for IT admin or business owner
@@ -20,6 +20,8 @@ export interface Permission {
   canApprovePurchases: boolean
   canViewPurchaseHistory: boolean
   canManageOrganization: boolean
+  canReplyToTickets: boolean
+  canResolveTickets: boolean
 }
 
 export const ROLE_PERMISSIONS: Record<UserRole, Permission> = {
@@ -34,6 +36,8 @@ export const ROLE_PERMISSIONS: Record<UserRole, Permission> = {
     canApprovePurchases: true,
     canViewPurchaseHistory: true,
     canManageOrganization: true,
+    canReplyToTickets: true,
+    canResolveTickets: true,
   },
   it_admin: {
     canViewAllOrganizations: false,
@@ -45,6 +49,8 @@ export const ROLE_PERMISSIONS: Record<UserRole, Permission> = {
     canApprovePurchases: true,
     canViewPurchaseHistory: true,
     canManageOrganization: false,
+    canReplyToTickets: true,
+    canResolveTickets: true,
   },
   end_user: {
     canViewAllOrganizations: false,
@@ -56,6 +62,8 @@ export const ROLE_PERMISSIONS: Record<UserRole, Permission> = {
     canApprovePurchases: false,
     canViewPurchaseHistory: true,
     canManageOrganization: false,
+    canReplyToTickets: true,
+    canResolveTickets: false,
   },
   // Ryujin Roles
   ryujin_admin: {
@@ -68,6 +76,8 @@ export const ROLE_PERMISSIONS: Record<UserRole, Permission> = {
     canApprovePurchases: true,
     canViewPurchaseHistory: true,
     canManageOrganization: true,
+    canReplyToTickets: true,
+    canResolveTickets: true,
   },
   ryujin_support: {
     canViewAllOrganizations: true,
@@ -79,6 +89,8 @@ export const ROLE_PERMISSIONS: Record<UserRole, Permission> = {
     canApprovePurchases: false,
     canViewPurchaseHistory: true,
     canManageOrganization: false,
+    canReplyToTickets: true,
+    canResolveTickets: true,
   },
 }
 

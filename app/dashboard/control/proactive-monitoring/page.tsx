@@ -61,7 +61,7 @@ export default function ProactiveMonitoringPage() {
           <h1 className="text-3xl font-bold text-gray-900">Proactive Monitoring</h1>
           <p className="text-gray-600 mt-1">Real-time system monitoring and alerts</p>
         </div>
-        <Button className="bg-green-600 hover:bg-green-700">
+        <Button className="bg-control hover:bg-control-hover text-control-foreground">
           <Activity className="w-4 h-4 mr-2" />
           View Reports
         </Button>

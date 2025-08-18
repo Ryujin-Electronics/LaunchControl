@@ -75,7 +75,7 @@ export default function SocialMediaManagementPage() {
           <h1 className="text-3xl font-bold text-gray-900">Social Media Management</h1>
           <p className="text-gray-600 mt-1">Manage social media accounts and content strategy</p>
         </div>
-        <Button className="bg-blue-600 hover:bg-blue-700">
+        <Button className="bg-muted hover:bg-muted-hover text-muted-foreground">
           <Plus className="w-4 h-4 mr-2" />
           Add Account
         </Button>

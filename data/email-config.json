@@ -1,0 +1,37 @@
+{
+  "provider": "smtp",
+  "sendgrid": {
+    "apiKey": "",
+    "fromEmail": "",
+    "fromName": ""
+  },
+  "mailgun": {
+    "apiKey": "",
+    "domain": "",
+    "fromEmail": ""
+  },
+  "awsSes": {
+    "region": "us-east-1",
+    "accessKeyId": "",
+    "secretAccessKey": "",
+    "fromEmail": ""
+  },
+  "smtp": {
+    "host": "mail.ryujinelectronics.com.au",
+    "port": 587,
+    "secure": true,
+    "username": "zeal@ryujinelectronics.com.au",
+    "password": "2T6V$n)EY4f%",
+    "fromEmail": "zeal@ryujinelectronics.com.au"
+  },
+  "company": {
+    "name": "Ryujin Electronics",
+    "address": "123 Tech Street, Canberra ACT 2600",
+    "phone": "+61 2 6123 4567",
+    "website": "www.ryujinelectronics.com.au"
+  },
+  "rateLimit": {
+    "maxEmailsPerHour": 100,
+    "maxEmailsPerDay": 1000
+  }
+}

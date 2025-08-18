@@ -79,7 +79,7 @@ export default function WebHostingPage() {
           <h1 className="text-3xl font-bold text-gray-900">Web Hosting</h1>
           <p className="text-gray-600 mt-1">Manage web hosting services and server infrastructure</p>
         </div>
-        <Button className="bg-blue-600 hover:bg-blue-700">
+        <Button className="bg-digital hover:bg-digital-hover text-digital-foreground">
           <Plus className="w-4 h-4 mr-2" />
           Add Hosting
         </Button>

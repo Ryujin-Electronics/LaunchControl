@@ -60,7 +60,7 @@ export default function WebDevelopmentPage() {
           <h1 className="text-3xl font-bold text-gray-900">Web Development</h1>
           <p className="text-gray-600 mt-1">Manage web development projects and deployments</p>
         </div>
-        <Button className="bg-blue-600 hover:bg-blue-700">
+        <Button className="bg-digital hover:bg-digital-hover text-digital-foreground">
           <Plus className="w-4 h-4 mr-2" />
           New Project
         </Button>
@@ -193,24 +193,24 @@ export default function WebDevelopmentPage() {
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-2 gap-4">
-              <Button className="h-20 flex flex-col items-center justify-center space-y-2 bg-blue-50 hover:bg-blue-100 border-2 border-blue-200">
-                <GitBranch className="w-6 h-6 text-blue-600" />
-                <span className="text-sm font-medium text-blue-900">Git Repos</span>
+              <Button className="h-20 flex flex-col items-center justify-center space-y-2 bg-digital hover:bg-digital-hover text-digital-foreground border-2 border-digital">
+                <GitBranch className="w-6 h-6 text-digital-foreground" />
+                <span className="text-sm font-medium text-digital-foreground">Git Repos</span>
               </Button>
               
-              <Button className="h-20 flex flex-col items-center justify-center space-y-2 bg-green-50 hover:bg-green-100 border-2 border-green-200">
-                <Globe className="w-6 h-6 text-green-600" />
-                <span className="text-sm font-medium text-green-900">Deploy</span>
+              <Button className="h-20 flex flex-col items-center justify-center space-y-2 bg-digital hover:bg-digital-hover text-digital-foreground border-2 border-digital">
+                <Globe className="w-6 h-6 text-digital-foreground" />
+                <span className="text-sm font-medium text-digital-foreground">Deploy</span>
               </Button>
               
-              <Button className="h-20 flex flex-col items-center justify-center space-y-2 bg-purple-50 hover:bg-purple-100 border-2 border-purple-200">
-                <Code className="w-6 h-6 text-purple-600" />
-                <span className="text-sm font-medium text-purple-900">IDE</span>
+              <Button className="h-20 flex flex-col items-center justify-center space-y-2 bg-digital hover:bg-digital-hover text-digital-foreground border-2 border-digital">
+                <Code className="w-6 h-6 text-digital-foreground" />
+                <span className="text-sm font-medium text-digital-foreground">IDE</span>
               </Button>
               
-              <Button className="h-20 flex flex-col items-center justify-center space-y-2 bg-orange-50 hover:bg-orange-100 border-2 border-orange-200">
-                <Settings className="w-6 h-6 text-orange-600" />
-                <span className="text-sm font-medium text-orange-900">Config</span>
+              <Button className="h-20 flex flex-col items-center justify-center space-y-2 bg-digital hover:bg-digital-hover text-digital-foreground border-2 border-digital">
+                <Settings className="w-6 h-6 text-digital-foreground" />
+                <span className="text-sm font-medium text-digital-foreground">Config</span>
               </Button>
             </div>
           </CardContent>

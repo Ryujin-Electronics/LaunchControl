@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { signOut, useSession } from 'next-auth/react'
 import { Sidebar } from '@/components/dashboard/sidebar'
+import { UserSwitcher } from '@/components/user-switcher'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { 
@@ -93,6 +94,9 @@ export default function DashboardLayout({
 
             {/* Right side actions */}
             <div className="flex items-center space-x-4">
+              {/* User Switcher */}
+              <UserSwitcher />
+              
               {/* Notifications */}
               <div className="relative">
                 <button 
@@ -100,7 +104,7 @@ export default function DashboardLayout({
                   onClick={() => setAlertsOpen(!alertsOpen)}
                 >
                   <Bell className="h-5 w-5" />
-                  <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+                  <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 icon-circle"></span>
                 </button>
 
                 {/* Alerts Popup */}

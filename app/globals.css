@@ -2,50 +2,128 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue:wght@700&display=swap');
+@font-face {
+  font-family: 'Univers';
+  src: url('/fonts/Univers.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Univers';
+  src: url('/fonts/Univers-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Univers';
+  src: url('/fonts/Univers-Oblique.otf') format('opentype');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+html, body {
+  font-family: 'Univers', Arial, sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6, .heading, .font-heading {
+  font-family: 'Bebas Neue', 'Univers', Arial, sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+/* Removed global border-radius override to allow circular elements */
+
+/* Removed border-radius override to allow circular elements */
+
 @layer base {
   :root {
+    /* Base Colors */
     --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --foreground: 0 0% 15%;
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 0 0% 15%;
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-    --primary: 221.2 83.2% 53.3%;
-    --primary-foreground: 210 40% 98%;
-    --secondary: 210 40% 96%;
-    --secondary-foreground: 222.2 84% 4.9%;
-    --muted: 210 40% 96%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 210 40% 96%;
-    --accent-foreground: 222.2 84% 4.9%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 221.2 83.2% 53.3%;
+    --popover-foreground: 0 0% 15%;
+    
+    /* Primary Purple Theme */
+    --primary: 270 70% 70%;
+    --primary-foreground: 0 0% 100%;
+    --primary-hover: 270 70% 80%;
+    --primary-selected: 270 70% 85%;
+    
+    /* Secondary Colors */
+    --secondary: 220 14% 96%;
+    --secondary-foreground: 0 0% 15%;
+    --muted: 220 14% 96%;
+    --muted-foreground: 0 0% 45%;
+    --accent: 220 14% 96%;
+    --accent-foreground: 0 0% 15%;
+    
+    /* Section-specific colors */
+    --support: 120 60% 50%;
+    --support-foreground: 0 0% 100%;
+    --support-light: 120 60% 95%;
+    --support-hover: 120 60% 60%;
+    
+    --control: 210 100% 50%;
+    --control-foreground: 0 0% 100%;
+    --control-light: 210 100% 95%;
+    --control-hover: 210 100% 60%;
+    
+    --acquisition: 30 100% 50%;
+    --acquisition-foreground: 0 0% 100%;
+    --acquisition-light: 30 100% 95%;
+    --acquisition-hover: 30 100% 60%;
+    
+    --strategy: 270 70% 70%;
+    --strategy-foreground: 0 0% 100%;
+    --strategy-light: 270 70% 95%;
+    --strategy-hover: 270 70% 80%;
+    
+    --digital: 180 60% 50%;
+    --digital-foreground: 0 0% 100%;
+    --digital-light: 180 60% 95%;
+    --digital-hover: 180 60% 60%;
+    
+    --alerts: 0 100% 50%;
+    --alerts-foreground: 0 0% 100%;
+    --alerts-light: 0 100% 95%;
+    --alerts-hover: 0 100% 60%;
+    
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 220 14% 90%;
+    --input: 220 14% 90%;
+    --ring: 270 70% 70%;
     --radius: 0.5rem;
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 217.2 91.2% 59.8%;
-    --primary-foreground: 222.2 84% 4.9%;
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 224.3 76.3% 94.1%;
+    --background: 0 0% 10%;
+    --foreground: 0 0% 90%;
+    --card: 0 0% 10%;
+    --card-foreground: 0 0% 90%;
+    --popover: 0 0% 10%;
+    --popover-foreground: 0 0% 90%;
+    --primary: 270 70% 70%;
+    --primary-foreground: 0 0% 100%;
+    --primary-hover: 270 70% 80%;
+    --primary-selected: 270 70% 85%;
+    --secondary: 0 0% 15%;
+    --secondary-foreground: 0 0% 90%;
+    --muted: 0 0% 15%;
+    --muted-foreground: 0 0% 65%;
+    --accent: 0 0% 15%;
+    --accent-foreground: 0 0% 90%;
+    --destructive: 0 62% 30%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 0 0% 20%;
+    --input: 0 0% 20%;
+    --ring: 270 70% 70%;
   }
 }
 
@@ -60,10 +138,102 @@
 
 @layer components {
   .launch-control-gradient {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #B379FF 0%, #E2A5FF 100%);
   }
   
   .command-center-bg {
-    background: radial-gradient(circle at center, rgba(102, 126, 234, 0.1) 0%, transparent 70%);
+    background: radial-gradient(circle at center, rgba(179, 121, 255, 0.1) 0%, transparent 70%);
+  }
+  
+  /* Section-specific button styles */
+  .btn-support {
+    @apply bg-support text-support-foreground hover:bg-support-hover;
+  }
+  
+  .btn-control {
+    @apply bg-control text-control-foreground hover:bg-control-hover;
+  }
+  
+  .btn-acquisition {
+    @apply bg-acquisition text-acquisition-foreground hover:bg-acquisition-hover;
+  }
+  
+  .btn-strategy {
+    @apply bg-strategy text-strategy-foreground hover:bg-strategy-hover;
+  }
+  
+  .btn-digital {
+    @apply bg-digital text-digital-foreground hover:bg-digital-hover;
+  }
+  
+  .btn-alerts {
+    @apply bg-alerts text-alerts-foreground hover:bg-alerts-hover;
+  }
+  
+  /* Card variants */
+  .card-support {
+    @apply bg-support-light border-support;
+  }
+  
+  .card-control {
+    @apply bg-control-light border-control;
+  }
+  
+  .card-acquisition {
+    @apply bg-acquisition-light border-acquisition;
+  }
+  
+  .card-strategy {
+    @apply bg-strategy-light border-strategy;
+  }
+  
+  .card-digital {
+    @apply bg-digital-light border-digital;
+  }
+  
+  .card-alerts {
+    @apply bg-alerts-light border-alerts;
+  }
+  
+  /* Auto-contrast text utility */
+  .text-auto-contrast {
+    color: hsl(var(--foreground));
+  }
+  
+  /* Function to calculate text color based on background brightness */
+  .text-on-primary {
+    color: hsl(var(--primary-foreground));
+  }
+  
+  .text-on-support {
+    color: hsl(var(--support-foreground));
+  }
+  
+  .text-on-control {
+    color: hsl(var(--control-foreground));
+  }
+  
+  .text-on-acquisition {
+    color: hsl(var(--acquisition-foreground));
+  }
+  
+  .text-on-strategy {
+    color: hsl(var(--strategy-foreground));
+  }
+  
+  .text-on-digital {
+    color: hsl(var(--digital-foreground));
+  }
+  
+  .text-on-alerts {
+    color: hsl(var(--alerts-foreground));
+  }
+  
+  /* Circular icon background utility class */
+  .icon-circle {
+    border-radius: 50% !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 } 

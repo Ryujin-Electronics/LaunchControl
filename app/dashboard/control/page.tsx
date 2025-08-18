@@ -22,7 +22,10 @@ const controlServices = [
     description: 'Manage and monitor all connected devices',
     icon: Smartphone,
     href: '/dashboard/control/device-management',
-    color: 'bg-blue-500',
+    color: 'bg-control',
+    textColor: 'text-control-foreground',
+    borderColor: 'border-control',
+    hoverColor: 'hover:bg-control-hover',
     stats: { devices: 247, online: 189 }
   },
   {
@@ -30,7 +33,10 @@ const controlServices = [
     description: 'Real-time system monitoring and alerts',
     icon: Cpu,
     href: '/dashboard/control/proactive-monitoring',
-    color: 'bg-green-500',
+    color: 'bg-support',
+    textColor: 'text-support-foreground',
+    borderColor: 'border-support',
+    hoverColor: 'hover:bg-support-hover',
     stats: { systems: 45, alerts: 3 }
   },
   {
@@ -38,7 +44,10 @@ const controlServices = [
     description: 'System alerts and notifications',
     icon: AlertTriangle,
     href: '/dashboard/alerts',
-    color: 'bg-red-500',
+    color: 'bg-alerts',
+    textColor: 'text-alerts-foreground',
+    borderColor: 'border-alerts',
+    hoverColor: 'hover:bg-alerts-hover',
     stats: { active: 3, critical: 1 }
   },
   {
@@ -46,7 +55,10 @@ const controlServices = [
     description: 'Historical alert records and analysis',
     icon: History,
     href: '/dashboard/control/alert-history',
-    color: 'bg-purple-500',
+    color: 'bg-strategy',
+    textColor: 'text-strategy-foreground',
+    borderColor: 'border-strategy',
+    hoverColor: 'hover:bg-strategy-hover',
     stats: { total: 1247, resolved: 1189 }
   },
   {
@@ -54,7 +66,10 @@ const controlServices = [
     description: 'Device activity and event logs',
     icon: History,
     href: '/dashboard/control/device-history',
-    color: 'bg-orange-500',
+    color: 'bg-acquisition',
+    textColor: 'text-acquisition-foreground',
+    borderColor: 'border-acquisition',
+    hoverColor: 'hover:bg-acquisition-hover',
     stats: { events: 3847, today: 156 }
   }
 ]
@@ -63,9 +78,9 @@ export default function ControlPage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg p-6 text-white">
+      <div className="bg-gradient-to-r from-control to-primary rounded-lg p-6 text-white">
         <h1 className="text-3xl font-bold mb-2">Control Centre</h1>
-        <p className="text-blue-100">Device management, monitoring, and system control</p>
+        <p className="text-control-light">Device management, monitoring, and system control</p>
       </div>
 
       {/* Quick Stats */}
@@ -73,10 +88,12 @@ export default function ControlPage() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Active Devices</CardTitle>
-            <Smartphone className="h-4 w-4 text-muted-foreground" />
+            <div className="w-8 h-8 bg-control icon-circle">
+              <Smartphone className="h-4 w-4 text-control-foreground" />
+            </div>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">247</div>
+            <div className="text-2xl font-bold text-control">247</div>
             <p className="text-xs text-muted-foreground">+5 this week</p>
           </CardContent>
         </Card>
@@ -84,10 +101,12 @@ export default function ControlPage() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">System Health</CardTitle>
-            <Activity className="h-4 w-4 text-muted-foreground" />
+            <div className="w-8 h-8 bg-support icon-circle">
+              <Activity className="h-4 w-4 text-support-foreground" />
+            </div>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">98.5%</div>
+            <div className="text-2xl font-bold text-support">98.5%</div>
             <p className="text-xs text-muted-foreground">Uptime this month</p>
           </CardContent>
         </Card>
@@ -95,91 +114,175 @@ export default function ControlPage() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Active Alerts</CardTitle>
-            <AlertTriangle className="h-4 w-4 text-muted-foreground" />
+            <div className="w-8 h-8 bg-alerts icon-circle">
+              <AlertTriangle className="h-4 w-4 text-alerts-foreground" />
+            </div>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">3</div>
-            <p className="text-xs text-muted-foreground">1 critical</p>
+            <div className="text-2xl font-bold text-alerts">3</div>
+            <p className="text-xs text-muted-foreground">Require attention</p>
           </CardContent>
         </Card>
         
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Response Time</CardTitle>
-            <Clock className="h-4 w-4 text-muted-foreground" />
+            <CardTitle className="text-sm font-medium">Security Status</CardTitle>
+            <div className="w-8 h-8 bg-strategy icon-circle">
+              <Shield className="h-4 w-4 text-strategy-foreground" />
+            </div>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">2.3s</div>
-            <p className="text-xs text-muted-foreground">Average</p>
+            <div className="text-2xl font-bold text-strategy">Secure</div>
+            <p className="text-xs text-muted-foreground">All systems protected</p>
           </CardContent>
         </Card>
       </div>
 
       {/* Control Services */}
-      <div>
-        <h2 className="text-2xl font-bold text-gray-900 mb-6">Control Services</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {controlServices.map((service) => (
-            <Link key={service.href} href={service.href}>
-              <Card className="hover:shadow-lg transition-all duration-200 hover:scale-105 cursor-pointer group">
-                <CardHeader>
-                  <div className="flex items-center justify-between">
-                    <div className={`w-12 h-12 ${service.color} rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform`}>
-                      <service.icon className="w-6 h-6 text-white" />
-                    </div>
-                    <TrendingUp className="w-5 h-5 text-gray-400 group-hover:text-gray-600" />
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {controlServices.map((service) => (
+          <Link key={service.href} href={service.href}>
+            <Card className="hover:shadow-lg transition-all duration-200 hover:scale-105 cursor-pointer group">
+              <CardHeader>
+                <div className="flex items-center justify-between">
+                  <div className={`w-10 h-10 ${service.color} icon-circle group-hover:scale-110 transition-transform`}>
+                    <service.icon className="w-5 h-5 text-white" />
                   </div>
-                  <CardTitle className="text-xl">{service.title}</CardTitle>
-                  <CardDescription>{service.description}</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="flex justify-between items-center">
-                    <div className="text-sm text-gray-600">
-                      {Object.entries(service.stats).map(([key, value]) => (
-                        <div key={key} className="flex items-center space-x-1">
-                          <span className="capitalize">{key}:</span>
-                          <span className="font-semibold">{value}</span>
-                        </div>
-                      ))}
-                    </div>
-                    <Button variant="outline" size="sm" className="group-hover:bg-blue-50 group-hover:border-blue-200">
-                      Access
-                    </Button>
+                  <Activity className="w-5 h-5 text-muted-foreground group-hover:text-foreground" />
+                </div>
+                <CardTitle className="text-xl">{service.title}</CardTitle>
+                <CardDescription>{service.description}</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="flex justify-between items-center">
+                  <div className="text-sm text-muted-foreground">
+                    {Object.entries(service.stats).map(([key, value]) => (
+                      <div key={key} className="flex items-center space-x-1">
+                        <span className="capitalize">{key}:</span>
+                        <span className="font-semibold text-foreground">{value}</span>
+                      </div>
+                    ))}
                   </div>
-                </CardContent>
-              </Card>
-            </Link>
-          ))}
-        </div>
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    className={`${service.borderColor} ${service.textColor} ${service.hoverColor}`}
+                  >
+                    Access
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          </Link>
+        ))}
+      </div>
+
+      {/* System Overview */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <TrendingUp className="h-5 w-5" />
+              System Performance
+            </CardTitle>
+            <CardDescription>
+              Real-time system performance metrics
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="flex items-center justify-between">
+              <span className="text-sm text-muted-foreground">CPU Usage</span>
+              <div className="flex items-center gap-2">
+                <div className="w-16 h-2 bg-muted rounded-full">
+                  <div className="w-10 h-2 bg-control rounded-full"></div>
+                </div>
+                <span className="text-sm font-medium text-control">62%</span>
+              </div>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-sm text-muted-foreground">Memory Usage</span>
+              <div className="flex items-center gap-2">
+                <div className="w-16 h-2 bg-muted rounded-full">
+                  <div className="w-12 h-2 bg-support rounded-full"></div>
+                </div>
+                <span className="text-sm font-medium text-support">75%</span>
+              </div>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-sm text-muted-foreground">Network Load</span>
+              <div className="flex items-center gap-2">
+                <div className="w-16 h-2 bg-muted rounded-full">
+                  <div className="w-8 h-2 bg-acquisition rounded-full"></div>
+                </div>
+                <span className="text-sm font-medium text-acquisition">48%</span>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Users className="h-5 w-5" />
+              Device Status
+            </CardTitle>
+            <CardDescription>
+              Overview of connected device status
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="flex items-center justify-between">
+              <span className="text-sm text-muted-foreground">Online Devices</span>
+              <span className="font-semibold text-support">189</span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-sm text-muted-foreground">Offline Devices</span>
+              <span className="font-semibold text-alerts">3</span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-sm text-muted-foreground">New This Week</span>
+              <span className="font-semibold text-control">5</span>
+            </div>
+          </CardContent>
+        </Card>
       </div>
 
       {/* Recent Activity */}
       <Card>
         <CardHeader>
-          <CardTitle>Recent System Activity</CardTitle>
-          <CardDescription>Latest device events and system changes</CardDescription>
+          <CardTitle>Recent Control Activities</CardTitle>
+          <CardDescription>
+            Latest system control activities and events
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
-            <div className="flex items-center space-x-4 p-3 bg-green-50 rounded-lg">
-              <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+            <div className="flex items-center gap-4">
+              <div className="w-2 h-2 bg-control icon-circle"></div>
               <div className="flex-1">
-                <p className="text-sm font-medium">New device connected</p>
-                <p className="text-xs text-gray-500">MacBook Pro 16" • 2 minutes ago</p>
+                <p className="text-sm font-medium text-foreground">New device connected</p>
+                <p className="text-xs text-muted-foreground">MacBook Pro 16" • 2 minutes ago</p>
               </div>
             </div>
-            <div className="flex items-center space-x-4 p-3 bg-orange-50 rounded-lg">
-              <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
+            <div className="flex items-center gap-4">
+              <div className="w-2 h-2 bg-support icon-circle"></div>
               <div className="flex-1">
-                <p className="text-sm font-medium">High CPU usage detected</p>
-                <p className="text-xs text-gray-500">Server-01 • 15 minutes ago</p>
+                <p className="text-sm font-medium text-foreground">System backup completed</p>
+                <p className="text-xs text-muted-foreground">Server-01 • 1 hour ago</p>
               </div>
             </div>
-            <div className="flex items-center space-x-4 p-3 bg-blue-50 rounded-lg">
-              <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+            <div className="flex items-center gap-4">
+              <div className="w-2 h-2 bg-alerts icon-circle"></div>
               <div className="flex-1">
-                <p className="text-sm font-medium">Backup completed successfully</p>
-                <p className="text-xs text-gray-500">Database-02 • 1 hour ago</p>
+                <p className="text-sm font-medium text-foreground">High CPU alert resolved</p>
+                <p className="text-xs text-muted-foreground">Server-02 • 3 hours ago</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-4">
+              <div className="w-2 h-2 bg-strategy icon-circle"></div>
+              <div className="flex-1">
+                <p className="text-sm font-medium text-foreground">Security scan completed</p>
+                <p className="text-xs text-muted-foreground">All systems • 6 hours ago</p>
               </div>
             </div>
           </div>

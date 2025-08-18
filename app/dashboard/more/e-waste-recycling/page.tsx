@@ -63,7 +63,7 @@ export default function EwasteRecyclingPage() {
           <h1 className="text-3xl font-bold text-gray-900">E-Waste Recycling</h1>
           <p className="text-gray-600 mt-1">Sustainable electronic waste disposal and recycling services</p>
         </div>
-        <Button className="bg-blue-600 hover:bg-blue-700">
+        <Button className="bg-muted hover:bg-muted-hover text-muted-foreground">
           <Plus className="w-4 h-4 mr-2" />
           Schedule Pickup
         </Button>

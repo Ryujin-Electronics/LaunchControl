@@ -58,7 +58,7 @@ export default function OnSiteSupportPage() {
           <h1 className="text-3xl font-bold text-gray-900">On-Site Support</h1>
           <p className="text-gray-600 mt-1">Manage on-site technical support sessions</p>
         </div>
-        <Button className="bg-blue-600 hover:bg-blue-700">
+        <Button className="bg-support hover:bg-support-hover text-support-foreground">
           <Plus className="w-4 h-4 mr-2" />
           Schedule Visit
         </Button>

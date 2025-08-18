@@ -67,7 +67,7 @@ export default function OnlineStorePage() {
           <h1 className="text-3xl font-bold text-gray-900">Online Store</h1>
           <p className="text-gray-600 mt-1">Manage products and track sales</p>
         </div>
-        <Button className="bg-green-600 hover:bg-green-700">
+        <Button className="bg-acquisition hover:bg-acquisition-hover text-acquisition-foreground">
           <Plus className="w-4 h-4 mr-2" />
           Add Product
         </Button>
@@ -78,10 +78,12 @@ export default function OnlineStorePage() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Sales</CardTitle>
-            <DollarSign className="h-4 w-4 text-green-500" />
+            <div className="w-8 h-8 bg-acquisition icon-circle">
+              <DollarSign className="h-4 w-4 text-acquisition-foreground" />
+            </div>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-green-600">$124,580</div>
+            <div className="text-2xl font-bold text-acquisition">$124,580</div>
             <p className="text-xs text-muted-foreground">+12% from last month</p>
           </CardContent>
         </Card>
@@ -89,10 +91,12 @@ export default function OnlineStorePage() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Orders</CardTitle>
-            <ShoppingCart className="h-4 w-4 text-blue-500" />
+            <div className="w-8 h-8 bg-acquisition icon-circle">
+              <ShoppingCart className="h-4 w-4 text-acquisition-foreground" />
+            </div>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-blue-600">1,247</div>
+            <div className="text-2xl font-bold text-acquisition">1,247</div>
             <p className="text-xs text-muted-foreground">+8% from last month</p>
           </CardContent>
         </Card>
@@ -100,10 +104,12 @@ export default function OnlineStorePage() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Products</CardTitle>
-            <Package className="h-4 w-4 text-purple-500" />
+            <div className="w-8 h-8 bg-acquisition icon-circle">
+              <Package className="h-4 w-4 text-acquisition-foreground" />
+            </div>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-purple-600">89</div>
+            <div className="text-2xl font-bold text-acquisition">89</div>
             <p className="text-xs text-muted-foreground">Active inventory</p>
           </CardContent>
         </Card>
@@ -111,10 +117,12 @@ export default function OnlineStorePage() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Conversion Rate</CardTitle>
-            <TrendingUp className="h-4 w-4 text-orange-500" />
+            <div className="w-8 h-8 bg-acquisition icon-circle">
+              <TrendingUp className="h-4 w-4 text-acquisition-foreground" />
+            </div>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-orange-600">3.2%</div>
+            <div className="text-2xl font-bold text-acquisition">3.2%</div>
             <p className="text-xs text-muted-foreground">+0.5% from last month</p>
           </CardContent>
         </Card>
@@ -137,7 +145,7 @@ export default function OnlineStorePage() {
                   className="pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
-              <Button variant="outline" size="sm">
+              <Button variant="outline" size="sm" className="border-acquisition text-acquisition hover:bg-acquisition hover:text-acquisition-foreground">
                 <Filter className="w-4 h-4 mr-2" />
                 Filter
               </Button>
@@ -149,14 +157,14 @@ export default function OnlineStorePage() {
             {products.map((product) => (
               <div key={product.id} className="border border-gray-200 rounded-lg p-4 hover:shadow-lg transition-shadow">
                 <div className="flex items-start justify-between mb-3">
-                  <div className="w-16 h-16 bg-gray-200 rounded-lg flex items-center justify-center">
+                  <div className="w-16 h-16 bg-gray-200 icon-circle">
                     <Package className="w-8 h-8 text-gray-400" />
                   </div>
                   <div className="flex space-x-1">
-                    <Button variant="ghost" size="sm">
+                    <Button variant="ghost" size="sm" className="text-acquisition hover:bg-acquisition hover:text-acquisition-foreground">
                       <Eye className="w-4 h-4" />
                     </Button>
-                    <Button variant="ghost" size="sm">
+                    <Button variant="ghost" size="sm" className="text-acquisition hover:bg-acquisition hover:text-acquisition-foreground">
                       <Edit className="w-4 h-4" />
                     </Button>
                   </div>
@@ -193,8 +201,8 @@ export default function OnlineStorePage() {
                 </div>
                 
                 <div className="flex space-x-2">
-                  <Button variant="outline" size="sm" className="flex-1">Edit</Button>
-                  <Button variant="outline" size="sm" className="flex-1">View</Button>
+                  <Button variant="outline" size="sm" className="flex-1 border-acquisition text-acquisition hover:bg-acquisition hover:text-acquisition-foreground">Edit</Button>
+                  <Button variant="outline" size="sm" className="flex-1 border-acquisition text-acquisition hover:bg-acquisition hover:text-acquisition-foreground">View</Button>
                 </div>
               </div>
             ))}

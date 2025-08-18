@@ -16,6 +16,10 @@ module.exports = {
       },
     },
     extend: {
+      fontFamily: {
+        sans: ['Univers', 'Arial', 'sans-serif'],
+        heading: ['Bebas Neue', 'Arial', 'sans-serif'],
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -25,6 +29,8 @@ module.exports = {
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
+          hover: "hsl(var(--primary-hover))",
+          selected: "hsl(var(--primary-selected))",
         },
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
@@ -50,11 +56,54 @@ module.exports = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        // Section-specific colors
+        support: {
+          DEFAULT: "hsl(var(--support))",
+          foreground: "hsl(var(--support-foreground))",
+          light: "hsl(var(--support-light))",
+          hover: "hsl(var(--support-hover))",
+        },
+        control: {
+          DEFAULT: "hsl(var(--control))",
+          foreground: "hsl(var(--control-foreground))",
+          light: "hsl(var(--control-light))",
+          hover: "hsl(var(--control-hover))",
+        },
+        acquisition: {
+          DEFAULT: "hsl(var(--acquisition))",
+          foreground: "hsl(var(--acquisition-foreground))",
+          light: "hsl(var(--acquisition-light))",
+          hover: "hsl(var(--acquisition-hover))",
+        },
+        strategy: {
+          DEFAULT: "hsl(var(--strategy))",
+          foreground: "hsl(var(--strategy-foreground))",
+          light: "hsl(var(--strategy-light))",
+          hover: "hsl(var(--strategy-hover))",
+        },
+        digital: {
+          DEFAULT: "hsl(var(--digital))",
+          foreground: "hsl(var(--digital-foreground))",
+          light: "hsl(var(--digital-light))",
+          hover: "hsl(var(--digital-hover))",
+        },
+        alerts: {
+          DEFAULT: "hsl(var(--alerts))",
+          foreground: "hsl(var(--alerts-foreground))",
+          light: "hsl(var(--alerts-light))",
+          hover: "hsl(var(--alerts-hover))",
+        },
       },
       borderRadius: {
-        lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
+        none: '0px',
+        sm: '0px',
+        DEFAULT: '0px',
+        md: '0px',
+        lg: '0px',
+        xl: '0px',
+        '2xl': '0px',
+        '3xl': '0px',
+        full: '0px',
       },
       keyframes: {
         "accordion-down": {

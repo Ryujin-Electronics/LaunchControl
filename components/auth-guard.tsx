@@ -2,8 +2,9 @@
 
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { hasPermission, UserRole } from '@/lib/auth';
+import { LoadingPage } from '@/components/ui/loading';
 
 interface AuthGuardProps {
   children: React.ReactNode;
@@ -20,6 +21,11 @@ export function AuthGuard({
 }: AuthGuardProps) {
   const { data: session, status } = useSession();
   const router = useRouter();
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   useEffect(() => {
     if (status === 'loading') return;
@@ -42,12 +48,13 @@ export function AuthGuard({
     }
   }, [session, status, router, allowedRoles, requiredPermissions]);
 
-  if (status === 'loading') {
-    return <div>Loading...</div>;
+  // Show loading state during initial load or when not yet client-side
+  if (status === 'loading' || !isClient) {
+    return <LoadingPage text="Loading authentication..." />;
   }
 
   if (!session) {
-    return null; // Will redirect to signin
+    return <LoadingPage text="Redirecting to sign in..." />;
   }
 
   // Check if user has required role
@@ -66,7 +73,16 @@ export function AuthGuard({
 }
 
 export function ClientOnlyGuard({ children }: { children: React.ReactNode }) {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  if (status === 'loading' || !isClient) {
+    return <LoadingPage text="Loading..." />;
+  }
   
   if (!session || !['full_access', 'it_admin', 'end_user'].includes(session.user.role)) {
     return <div>Access Denied - Client access only</div>;
@@ -76,7 +92,16 @@ export function ClientOnlyGuard({ children }: { children: React.ReactNode }) {
 }
 
 export function RyujinOnlyGuard({ children }: { children: React.ReactNode }) {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  if (status === 'loading' || !isClient) {
+    return <LoadingPage text="Loading..." />;
+  }
   
   if (!session || !['ryujin_admin', 'ryujin_support'].includes(session.user.role)) {
     return <div>Access Denied - Ryujin access only</div>;

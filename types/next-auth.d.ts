@@ -10,6 +10,10 @@ declare module "next-auth" {
       name: string
       type: string
     }
+    image?: string
+    phone?: string
+    jobTitle?: string
+    preferences?: any
   }
   
   interface Session {
@@ -24,6 +28,10 @@ declare module "next-auth" {
         name: string
         type: string
       }
+      image?: string
+      phone?: string
+      jobTitle?: string
+      preferences?: any
     }
   }
 }
@@ -38,5 +46,9 @@ declare module "next-auth/jwt" {
       name: string
       type: string
     }
+    image?: string
+    phone?: string
+    jobTitle?: string
+    preferences?: any
   }
 } 
